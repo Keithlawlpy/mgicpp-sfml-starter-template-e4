@@ -15,8 +15,11 @@ Game::~Game()
 
 bool Game::init()
 {
+	character = new sf::Sprite();
+	platform = new sf::Sprite();
 
-  return true;
+
+    return true;
 }
 
 void Game::update(float dt)
