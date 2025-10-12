@@ -16,8 +16,21 @@ Game::~Game()
 bool Game::init()
 {
 	character = new sf::Sprite();
-	platform = new sf::Sprite();
+	passports = new sf::Sprite();
 
+	for (int i = 0; i < 3; i++)
+	{
+		if (!animals[i].loadFromFile("res/animal" + std::to_string(i) + ".png"))
+		{
+			std::cout << "Failed to load animal texture" << std::endl;
+			return false;
+		}
+		if (!passports[i].loadFromFile("res/passport" + std::to_string(i) + ".png"))
+		{
+			std::cout << "Failed to load passport texture" << std::endl;
+			return false;
+		}
+	}
 
     return true;
 }

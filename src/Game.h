@@ -18,7 +18,7 @@ class Game
  private:
   sf::RenderWindow& window;
   sf::Sprite* character;
-  sf::Sprite* platform;
+  sf::Sprite* passports;
   sf::Texture* animals = new sf::Texture[3];
   sf::Texture* passports = new sf::Texture[3];
 
