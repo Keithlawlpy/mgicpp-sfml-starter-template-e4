@@ -17,10 +17,16 @@ class Game
 
  private:
   sf::RenderWindow& window;
+
+  //chara
   sf::Sprite* character;
-  sf::Sprite* passports;
+  sf::Sprite* passport;
   sf::Texture* animals = new sf::Texture[3];
   sf::Texture* passports = new sf::Texture[3];
+
+  //background
+  sf::Sprite background;
+  sf::Texture background_texture;
 
 
 };

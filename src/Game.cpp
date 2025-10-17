@@ -10,15 +10,18 @@ Game::Game(sf::RenderWindow& game_window)
 
 Game::~Game()
 {
-
+	delete[] animals;
+	delete[] passports;
+	delete character;
+	delete passport;
 }
 
 bool Game::init()
 {
 	character = new sf::Sprite();
-	passports = new sf::Sprite();
+	passport = new sf::Sprite();
 
-	for (int i = 0; i < 3; i++)
+	/*for (int i = 0; i < 3; i++)
 	{
 		if (!animals[i].loadFromFile("res/animal" + std::to_string(i) + ".png"))
 		{
@@ -31,6 +34,15 @@ bool Game::init()
 			return false;
 		}
 	}
+	*/
+
+	//background
+	if (!background_texture.loadFromFile("../Data/WhackaMole_Worksheet/background.png"))
+	{
+		std::cout << "background texture did not load \n";
+	}
+	background.setTexture(background_texture);
+
 
     return true;
 }
@@ -42,6 +54,7 @@ void Game::update(float dt)
 
 void Game::render()
 {
+	window.draw(background);
 
 }
 
