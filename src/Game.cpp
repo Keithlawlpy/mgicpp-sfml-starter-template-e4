@@ -21,21 +21,6 @@ bool Game::init()
 	character = new sf::Sprite();
 	passport = new sf::Sprite();
 
-	/*for (int i = 0; i < 3; i++)
-	{
-		if (!animals[i].loadFromFile("res/animal" + std::to_string(i) + ".png"))
-		{
-			std::cout << "Failed to load animal texture" << std::endl;
-			return false;
-		}
-		if (!passports[i].loadFromFile("res/passport" + std::to_string(i) + ".png"))
-		{
-			std::cout << "Failed to load passport texture" << std::endl;
-			return false;
-		}
-	}
-	*/
-
 	//background
 	if (!background_texture.loadFromFile("../Data/WhackaMole_Worksheet/background.png"))
 	{
@@ -43,6 +28,8 @@ bool Game::init()
 	}
 	background.setTexture(background_texture);
 
+
+	newAnimal();
 
     return true;
 }
@@ -55,6 +42,7 @@ void Game::update(float dt)
 void Game::render()
 {
 	window.draw(background);
+
 
 }
 
@@ -71,4 +59,28 @@ void Game::keyPressed(sf::Event event)
 
 }
 
+void Game::newAnimal()
+{
+	passport_accepted = false;
+	passport_rejected = false;
 
+	int animal_index = rand() % 3;
+	int passport_index = rand() % 3;
+
+	if (animal_index == passport_index)
+	{
+		should_accept = true;
+	}
+	else
+	{
+		should_accept = false;
+	}
+
+	character->setTexture(animals[animal_index], true);
+	character->setScale(1.8, 1.8);
+	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
+
+	passport->setTexture(passports[passport_index]);
+	passport->setScale(0.6, 0.6);
+	passport->setPosition(window.getSize().x / 2, window.getSize().y / 2);
+}

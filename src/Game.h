@@ -14,6 +14,7 @@ class Game
   void render();
   void mouseClicked(sf::Event event);
   void keyPressed(sf::Event event);
+  void newAnimal();
 
  private:
   sf::RenderWindow& window;
@@ -27,6 +28,11 @@ class Game
   //background
   sf::Sprite background;
   sf::Texture background_texture;
+
+  //vaildation
+  bool passport_accepted = true;
+  bool passport_rejected = true;
+  bool should_accept = true;
 
 
 };
