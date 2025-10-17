@@ -35,6 +35,17 @@ class Game
   bool should_accept = true;
 
 
+  //game state
+
+  enum class GameState
+  {
+	MENUSCREEN,
+	PLAYING,
+	END
+  };
+
+  GameState current_state = GameState::MENUSCREEN;
+
 };
 
 #endif // PLATFORMER_GAME_H

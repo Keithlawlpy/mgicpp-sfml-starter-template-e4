@@ -28,8 +28,36 @@ bool Game::init()
 	}
 	background.setTexture(background_texture);
 
+	//animal arrays
+	if (!animals[0].loadFromFile("../Data/Critter_Crossing_Customs/eleplant.png"))
+	{
+		std::cout << "eleplant texture did not load \n";
+	}
+	if (!animals[1].loadFromFile("../Data/Critter_Crossing_Customs/moose.png"))
+	{
+		std::cout << "moose texture did not load \n";
+	}
+	if (!animals[2].loadFromFile("../Data/Critter_Crossing_Customs/penguin.png"))
+	{
+		std::cout << "penguin texture did not load \n";
+	}
+
+	if (!passports[0].loadFromFile("../Data/Critter_Crossing_Customs/elephant_passport.png"))
+	{
+		std::cout << "eleplant passport texture did not load \n";
+	}
+	if (!passports[1].loadFromFile("../Data/Critter_Crossing_Customs/moose_passport.png"))
+	{
+		std::cout << "moose passport texture did not load \n";
+	}
+	if (!passports[2].loadFromFile("../Data/Critter_Crossing_Customs/penguin_passport.png"))
+	{
+		std::cout << "penguin passport texture did not load \n";
+	}
 
 	newAnimal();
+
+
 
     return true;
 }
@@ -37,11 +65,42 @@ bool Game::init()
 void Game::update(float dt)
 {
 
+
 }
 
 void Game::render()
 {
-	window.draw(background);
+
+	switch(current_state)
+	{
+		case GameState::MENUSCREEN:
+			//draw menu screen
+			break;
+		case GameState::PLAYING:
+
+			window.draw(background);
+			window.draw(*character);
+			window.draw(*passport);
+			
+			if (passport_accepted)
+			{
+				//draw accepted stamp
+			}
+			else if (passport_rejected)
+			{
+				//draw rejected stamp
+			}
+
+
+			break;
+
+		case GameState::END:
+			//draw end screen
+			break;
+
+		default:
+			break;
+	}
 
 
 }
@@ -56,7 +115,21 @@ void Game::mouseClicked(sf::Event event)
 
 void Game::keyPressed(sf::Event event)
 {
-
+	if(event.key.code == sf::Keyboard::Space)
+	{
+		if (current_state == GameState::MENUSCREEN)
+		{
+			current_state = GameState::PLAYING;
+		}
+		else if (current_state == GameState::PLAYING)
+		{
+			current_state = GameState::END;
+		}
+		else if (current_state == GameState::END)
+		{
+			current_state = GameState::MENUSCREEN;
+		}
+	}
 }
 
 void Game::newAnimal()
