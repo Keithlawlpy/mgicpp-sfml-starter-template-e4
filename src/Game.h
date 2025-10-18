@@ -12,9 +12,10 @@ class Game
   bool init();
   void update(float dt);
   void render();
-  void mouseClicked(sf::Event event);
+  void mousePressed(sf::Event event);
   void keyPressed(sf::Event event);
   void newAnimal();
+  void dragSprite(sf::Sprite* sprite);
 
  private:
   sf::RenderWindow& window;
@@ -37,6 +38,10 @@ class Game
   bool passport_accepted = true;
   bool passport_rejected = true;
   bool should_accept = true;
+
+  //dragging
+  sf::Sprite* dragged = nullptr;
+  sf::Vector2f drag_offset;
 
 
   //game state

@@ -42,30 +42,21 @@ bool Game::init()
 	background.setTexture(background_texture);
 
 	//animal arrays
-	if (!animals[0].loadFromFile("../Data/Critter_Crossing_Customs/elephant.png"))
-	{
-		std::cout << "elephant texture did not load \n";
-	}
-	if (!animals[1].loadFromFile("../Data/Critter_Crossing_Customs/moose.png"))
-	{
-		std::cout << "moose texture did not load \n";
-	}
-	if (!animals[2].loadFromFile("../Data/Critter_Crossing_Customs/penguin.png"))
-	{
-		std::cout << "penguin texture did not load \n";
-	}
+	std::string animalNames[3] = { "elephant", "moose", "penguin" };
 
-	if (!passports[0].loadFromFile("../Data/Critter_Crossing_Customs/elephant_passport.png"))
+	for (int i = 0; i < 3; i++)
 	{
-		std::cout << "eleplant passport texture did not load \n";
-	}
-	if (!passports[1].loadFromFile("../Data/Critter_Crossing_Customs/moose_passport.png"))
-	{
-		std::cout << "moose passport texture did not load \n";
-	}
-	if (!passports[2].loadFromFile("../Data/Critter_Crossing_Customs/penguin_passport.png"))
-	{
-		std::cout << "penguin passport texture did not load \n";
+		// Load animal texture
+		if (!animals[i].loadFromFile("../Data/Critter_Crossing_Customs/" + animalNames[i] + ".png"))
+		{
+			std::cout << animalNames[i] << " texture did not load \n";
+		}
+
+		// Load passport texture
+		if (!passports[i].loadFromFile("../Data/Critter_Crossing_Customs/" + animalNames[i] + "_passport.png"))
+		{
+			std::cout << animalNames[i] << " passport texture did not load \n";
+		}
 	}
 
 	newAnimal();
@@ -78,7 +69,7 @@ bool Game::init()
 void Game::update(float dt)
 {
 
-
+	
 }
 
 void Game::render()
@@ -119,10 +110,24 @@ void Game::render()
 
 }
 
-void Game::mouseClicked(sf::Event event)
+void Game::mousePressed(sf::Event event)
 {
-  //get the click position
-  sf::Vector2i click = sf::Mouse::getPosition(window);
+	//get the click position
+	sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
+
+	if (event.mouseButton.button == sf::Mouse::Left)
+	{
+		// use the click variable (was undefined before)
+		sf::Vector2f mouse_positionf = static_cast<sf::Vector2f>(mouse_position);
+
+		// passport is a pointer, so use -> and check bounds
+		if (passport->getGlobalBounds().contains(mouse_positionf))
+		{
+			// set dragged to point to the passport sprite (not &passport)
+			dragged = passport;
+			drag_offset = mouse_positionf - dragged->getPosition();
+		}
+	}
 
 
 }
@@ -177,4 +182,16 @@ void Game::newAnimal()
 	passport->setTexture(passports[passport_index]);
 	passport->setScale(0.6, 0.6);
 	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
+}
+
+void Game::dragSprite(sf::Sprite* sprite)
+{
+	if (sprite != nullptr)
+	{
+		sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
+		sf::Vector2f mouse_positionf = static_cast<sf::Vector2f>(mouse_position);
+
+		sf::Vector2f drag_position = mouse_positionf; - drag_offset;
+		sprite->setPosition(drag_position.x, drag_position.y);
+	}
 }
