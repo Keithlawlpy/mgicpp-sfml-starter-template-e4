@@ -19,6 +19,10 @@ class Game
  private:
   sf::RenderWindow& window;
 
+  //main screen
+  sf::Font font;
+  sf::Text menu_text;
+
   //chara
   sf::Sprite* character;
   sf::Sprite* passport;

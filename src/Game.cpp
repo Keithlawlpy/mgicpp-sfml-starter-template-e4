@@ -21,6 +21,19 @@ bool Game::init()
 	character = new sf::Sprite();
 	passport = new sf::Sprite();
 
+	//main screen
+
+	// menu text
+	if (!font.loadFromFile("../Data/Fonts/OpenSans-Bold.ttf"))
+	{
+		std::cout << "font did not load \n";
+	}
+	menu_text.setString("Press enter to \n start the game \n press Q to quit in game");
+	menu_text.setFont(font);
+	menu_text.setCharacterSize(70);
+	menu_text.setPosition((window.getSize().x - menu_text.getGlobalBounds().width) / 2, (window.getSize().y - menu_text.getGlobalBounds().height) / 10);
+	menu_text.setFillColor(sf::Color(253, 184, 39, 128));
+
 	//background
 	if (!background_texture.loadFromFile("../Data/WhackaMole_Worksheet/background.png"))
 	{
@@ -29,9 +42,9 @@ bool Game::init()
 	background.setTexture(background_texture);
 
 	//animal arrays
-	if (!animals[0].loadFromFile("../Data/Critter_Crossing_Customs/eleplant.png"))
+	if (!animals[0].loadFromFile("../Data/Critter_Crossing_Customs/elephant.png"))
 	{
-		std::cout << "eleplant texture did not load \n";
+		std::cout << "elephant texture did not load \n";
 	}
 	if (!animals[1].loadFromFile("../Data/Critter_Crossing_Customs/moose.png"))
 	{
@@ -74,7 +87,8 @@ void Game::render()
 	switch(current_state)
 	{
 		case GameState::MENUSCREEN:
-			//draw menu screen
+			window.draw(menu_text);
+
 			break;
 		case GameState::PLAYING:
 
@@ -115,7 +129,7 @@ void Game::mouseClicked(sf::Event event)
 
 void Game::keyPressed(sf::Event event)
 {
-	if(event.key.code == sf::Keyboard::Space)
+	if(event.key.code == sf::Keyboard::Enter)
 	{
 		if (current_state == GameState::MENUSCREEN)
 		{
@@ -128,6 +142,13 @@ void Game::keyPressed(sf::Event event)
 		else if (current_state == GameState::END)
 		{
 			current_state = GameState::MENUSCREEN;
+		}
+	}
+	if(event.key.code == sf::Keyboard::Q)
+	{
+		if (current_state == GameState::PLAYING)
+		{
+			window.close();
 		}
 	}
 }
@@ -155,5 +176,5 @@ void Game::newAnimal()
 
 	passport->setTexture(passports[passport_index]);
 	passport->setScale(0.6, 0.6);
-	passport->setPosition(window.getSize().x / 2, window.getSize().y / 2);
+	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
 }
