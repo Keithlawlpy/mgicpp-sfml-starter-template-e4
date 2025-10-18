@@ -68,7 +68,7 @@ bool Game::init()
 
 void Game::update(float dt)
 {
-
+	dragSprite(dragged);
 	
 }
 
@@ -132,6 +132,17 @@ void Game::mousePressed(sf::Event event)
 
 }
 
+void Game::mouseReleased(sf::Event event)
+{
+	if (event.type == sf::Event::MouseButtonReleased)
+	{
+		if (event.mouseButton.button == sf::Mouse::Left)
+		{
+			dragged = nullptr;
+		}
+	}
+}
+
 void Game::keyPressed(sf::Event event)
 {
 	if(event.key.code == sf::Keyboard::Enter)
@@ -191,7 +202,7 @@ void Game::dragSprite(sf::Sprite* sprite)
 		sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
 		sf::Vector2f mouse_positionf = static_cast<sf::Vector2f>(mouse_position);
 
-		sf::Vector2f drag_position = mouse_positionf; - drag_offset;
+		sf::Vector2f drag_position = mouse_positionf - drag_offset;
 		sprite->setPosition(drag_position.x, drag_position.y);
 	}
 }

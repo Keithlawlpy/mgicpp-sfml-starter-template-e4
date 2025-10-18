@@ -13,6 +13,7 @@ class Game
   void update(float dt);
   void render();
   void mousePressed(sf::Event event);
+  void mouseReleased(sf::Event event);
   void keyPressed(sf::Event event);
   void newAnimal();
   void dragSprite(sf::Sprite* sprite);
