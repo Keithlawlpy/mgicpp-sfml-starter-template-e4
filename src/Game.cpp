@@ -144,6 +144,7 @@ void Game::mousePressed(sf::Event event)
 			dragged = passport;
 			drag_offset = mouse_positionf - dragged->getPosition();
 		}
+
 	}
 
 

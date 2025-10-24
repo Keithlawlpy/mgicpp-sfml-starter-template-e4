@@ -25,6 +25,9 @@ class Game
   sf::Font font;
   sf::Text menu_text;
 
+  //game screen
+  sf::Text Score;
+
   //chara
   sf::Sprite* character;
   sf::Sprite* passport;
