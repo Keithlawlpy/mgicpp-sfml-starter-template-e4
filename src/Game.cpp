@@ -59,6 +59,24 @@ bool Game::init()
 		}
 	}
 
+	//button
+
+	if (!accept_texture.loadFromFile("../Data/Critter_Crossing_Customs/accept_button.png"))
+	{
+		std::cout << "accept texture did not load";
+	}
+	accept_button.setTexture(accept_texture);
+	accept_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 25);
+
+	if (!reject_texture.loadFromFile("../Data/Critter_Crossing_Customs/reject_button.png"))
+	{
+		std::cout << "reject texture did not load";
+	}
+	reject_button.setTexture(reject_texture);
+	reject_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 150);
+
+
+
 	newAnimal();
 
 
@@ -86,6 +104,8 @@ void Game::render()
 			window.draw(background);
 			window.draw(*character);
 			window.draw(*passport);
+			window.draw(accept_button);
+			window.draw(reject_button);
 			
 			if (passport_accepted)
 			{
@@ -112,18 +132,15 @@ void Game::render()
 
 void Game::mousePressed(sf::Event event)
 {
-	//get the click position
+	//click position
 	sf::Vector2i mouse_position = sf::Mouse::getPosition(window);
 
 	if (event.mouseButton.button == sf::Mouse::Left)
 	{
-		// use the click variable (was undefined before)
 		sf::Vector2f mouse_positionf = static_cast<sf::Vector2f>(mouse_position);
-
-		// passport is a pointer, so use -> and check bounds
+		
 		if (passport->getGlobalBounds().contains(mouse_positionf))
 		{
-			// set dragged to point to the passport sprite (not &passport)
 			dragged = passport;
 			drag_offset = mouse_positionf - dragged->getPosition();
 		}
@@ -189,6 +206,7 @@ void Game::newAnimal()
 	character->setTexture(animals[animal_index], true);
 	character->setScale(1.8, 1.8);
 	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
+
 
 	passport->setTexture(passports[passport_index]);
 	passport->setScale(0.6, 0.6);
