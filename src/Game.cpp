@@ -141,7 +141,17 @@ void Game::mousePressed(sf::Event event)
 		
 		if (passport->getGlobalBounds().contains(mouse_positionf))
 		{
-			dragged = passport;
+			dragged = passport;	
+			drag_offset = mouse_positionf - dragged->getPosition();
+		}
+		if (accept_button.getGlobalBounds().contains(mouse_positionf))
+		{
+			dragged = &accept_button;
+			drag_offset = mouse_positionf - dragged->getPosition();
+		}
+		if (reject_button.getGlobalBounds().contains(mouse_positionf))
+		{
+			dragged = &reject_button;
 			drag_offset = mouse_positionf - dragged->getPosition();
 		}
 
