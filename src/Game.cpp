@@ -87,6 +87,25 @@ bool Game::init()
 void Game::update(float dt)
 {
 	dragSprite(dragged);
+
+
+	//check for passport validation
+	if (accept_button.getGlobalBounds().intersects(passport->getGlobalBounds()))
+	{
+
+	}
+
+	if (reject_button.getGlobalBounds().intersects(passport->getGlobalBounds()))
+	{
+
+	}
+
+
+	//passport validation
+	if (passport_accepted || passport_rejected)
+	{
+		newAnimal();
+	}
 	
 }
 
@@ -194,6 +213,10 @@ void Game::keyPressed(sf::Event event)
 		{
 			window.close();
 		}
+	}
+	if(event.key.code == sf::Keyboard::R)
+	{
+		newAnimal();
 	}
 }
 
