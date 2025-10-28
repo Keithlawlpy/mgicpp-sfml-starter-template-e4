@@ -4,12 +4,15 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameObject.h"
+#include "Animals.h"
+#include "Passport.h"
 
 class Game
 {
  public:
   Game(sf::RenderWindow& window);
   ~Game();
+
   bool init();
   void update(float dt);
   void render();
@@ -29,11 +32,15 @@ class Game
   //game screen
   sf::Text Score;
 
-  //chara
-  sf::Sprite* character;
-  sf::Sprite* passport;
-  sf::Texture* animals = new sf::Texture[3];
-  sf::Texture* passports = new sf::Texture[3];
+  // game objects
+
+  std::vector<Animal> animals;
+  std::vector<Passport> passports;
+
+  std::unique_ptr<Animal> currentAnimal;
+  std::unique_ptr<Passport> currentPassport;
+
+  std::vector<std::string> animalNames = { "elephant", "moose", "penguin" };
 
   //buttons
   sf::Sprite accept_button;

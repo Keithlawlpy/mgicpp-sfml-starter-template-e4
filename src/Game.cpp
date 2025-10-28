@@ -10,16 +10,11 @@ Game::Game(sf::RenderWindow& game_window)
 
 Game::~Game()
 {
-	delete[] animals;
-	delete[] passports;
-	delete character;
-	delete passport;
+
 }
 
 bool Game::init()
 {
-	character = new sf::Sprite();
-	passport = new sf::Sprite();
 
 	//main screen
 
@@ -41,24 +36,18 @@ bool Game::init()
 	}
 	background.setTexture(background_texture);
 
-	//animal arrays
-	std::string animalNames[3] = { "elephant", "moose", "penguin" };
+	//animal initialization
 
-	for (int i = 0; i < 3; i++)
+	for (const auto& name : animalNames)
 	{
-		// Load animal texture
-		if (!animals[i].loadFromFile("../Data/Critter_Crossing_Customs/" + animalNames[i] + ".png"))
-		{
-			std::cout << animalNames[i] << " texture did not load \n";
-		}
+		Animal animal;
+		animal.initialiseSprite(*new sf::Texture, "../Data/Critter_Crossing_Customs/" + name + ".png");
+		animals.push_back(animal);
 
-		// Load passport texture
-		if (!passports[i].loadFromFile("../Data/Critter_Crossing_Customs/" + animalNames[i] + "_passport.png"))
-		{
-			std::cout << animalNames[i] << " passport texture did not load \n";
-		}
+		Passport passport;
+		passport.initialiseSprite(*new sf::Texture, "../Data/Critter_Crossing_Customs/" + name + "_passport.png");
+		passports.push_back(passport);
 	}
-
 	//button
 
 	if (!accept_texture.loadFromFile("../Data/Critter_Crossing_Customs/accept_button.png"))
@@ -78,9 +67,6 @@ bool Game::init()
 
 
 	newAnimal();
-
-
-
     return true;
 }
 
@@ -90,14 +76,13 @@ void Game::update(float dt)
 
 
 	//check for passport validation
-	if (accept_button.getGlobalBounds().intersects(passport->getGlobalBounds()))
+	if (accept_button.getGlobalBounds().intersects(currentPassport->getSprite()->getGlobalBounds()))
 	{
-
+		passport_accepted = true;
 	}
-
-	if (reject_button.getGlobalBounds().intersects(passport->getGlobalBounds()))
+	if (reject_button.getGlobalBounds().intersects(currentPassport->getSprite()->getGlobalBounds()))
 	{
-
+		passport_rejected = true;
 	}
 
 
@@ -121,8 +106,8 @@ void Game::render()
 		case GameState::PLAYING:
 
 			window.draw(background);
-			window.draw(*character);
-			window.draw(*passport);
+			window.draw(*currentAnimal->getSprite());
+			window.draw(*currentPassport->getSprite());
 			window.draw(accept_button);
 			window.draw(reject_button);
 			
@@ -158,9 +143,9 @@ void Game::mousePressed(sf::Event event)
 	{
 		sf::Vector2f mouse_positionf = static_cast<sf::Vector2f>(mouse_position);
 		
-		if (passport->getGlobalBounds().contains(mouse_positionf))
+		if (currentPassport->getSprite()->getGlobalBounds().contains(mouse_positionf))
 		{
-			dragged = passport;	
+			dragged = currentPassport->getSprite();	
 			drag_offset = mouse_positionf - dragged->getPosition();
 		}
 		if (accept_button.getGlobalBounds().contains(mouse_positionf))
@@ -225,8 +210,8 @@ void Game::newAnimal()
 	passport_accepted = false;
 	passport_rejected = false;
 
-	int animal_index = rand() % 3;
-	int passport_index = rand() % 3;
+	int animal_index = rand() % animals.size();
+	int passport_index = rand() % passports.size();
 
 	if (animal_index == passport_index)
 	{
@@ -237,14 +222,15 @@ void Game::newAnimal()
 		should_accept = false;
 	}
 
-	character->setTexture(animals[animal_index], true);
-	character->setScale(1.8, 1.8);
-	character->setPosition(window.getSize().x / 12, window.getSize().y / 12);
+	currentAnimal = std::make_unique<Animal>(animals[animal_index]);
+	currentPassport = std::make_unique<Passport>(passports[passport_index]);
 
+	currentAnimal->getSprite()->setScale(1.8f, 1.8f);
+	currentAnimal->getSprite()->setPosition(window.getSize().x / 12, window.getSize().y / 12);
 
-	passport->setTexture(passports[passport_index]);
-	passport->setScale(0.6, 0.6);
-	passport->setPosition(window.getSize().x / 2, window.getSize().y / 3);
+	currentPassport->getSprite()->setScale(0.6f, 0.6f);
+	currentPassport->getSprite()->setPosition(window.getSize().x / 2, window.getSize().y / 3);
+
 }
 
 void Game::dragSprite(sf::Sprite* sprite)

@@ -9,11 +9,7 @@ GameObject::GameObject()
 
 GameObject::~GameObject()
 {
-    if (sprite != nullptr)
-    {
-        delete sprite;
-        sprite = nullptr;
-    }
+
 }
 
 

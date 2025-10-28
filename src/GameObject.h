@@ -21,6 +21,4 @@ class GameObject
 		sf::Text* Text = nullptr;
 };
 
-
-
 #endif

@@ -2,21 +2,17 @@
 #define PLATFORMER_ANIMAL_H
 
 #include <SFML/Graphics.hpp>
-#include <string>
+#include "GameObject.h"
 
-class Animals
+class Animal : public GameObject
 {
 
-public:
-    Animal(const std::string& texturePath);
-    sf::Sprite& getSprite();
-    void setPosition(float x, float y);
-    void setScale(float x, float y);
-
-private:
-    sf::Texture texture;
-    sf::Sprite sprite;
+	public:
+		Animal();
+		~Animal();
 
 };
+
+
 
 #endif  // PLATFORMER_ANIMAL_H
