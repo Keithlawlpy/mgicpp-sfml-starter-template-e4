@@ -48,6 +48,10 @@ class Game
   sf::Sprite reject_button;
   sf::Texture reject_texture;
 
+  //stamps
+  GameObject accepted_stamp;
+  GameObject rejected_stamp;
+
   //background
   sf::Sprite background;
   sf::Texture background_texture;

@@ -64,6 +64,15 @@ bool Game::init()
 	reject_button.setTexture(reject_texture);
 	reject_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 150);
 
+	//stamps
+
+	accepted_stamp.initialiseSprite(*new sf::Texture, "../Data/Critter_Crossing_Customs/accept.png");
+	rejected_stamp.initialiseSprite(*new sf::Texture, "../Data/Critter_Crossing_Customs/reject.png");
+
+	accepted_stamp.getSprite()->setScale(0.5f, 0.5f);
+	rejected_stamp.getSprite()->setScale(0.5f, 0.5f);
+
+
 
 
 	newAnimal();
@@ -89,7 +98,7 @@ void Game::update(float dt)
 	//passport validation
 	if (passport_accepted || passport_rejected)
 	{
-		newAnimal();
+		
 	}
 	
 }
@@ -108,6 +117,9 @@ void Game::render()
 			window.draw(background);
 			window.draw(*currentAnimal->getSprite());
 			window.draw(*currentPassport->getSprite());
+			window.draw(Score);
+			window.draw(*accepted_stamp.getSprite());
+			window.draw(*rejected_stamp.getSprite());
 			window.draw(accept_button);
 			window.draw(reject_button);
 			
@@ -230,6 +242,10 @@ void Game::newAnimal()
 
 	currentPassport->getSprite()->setScale(0.6f, 0.6f);
 	currentPassport->getSprite()->setPosition(window.getSize().x / 2, window.getSize().y / 3);
+
+	//reset buttons position
+	accept_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 25);
+	reject_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 150);
 
 }
 
