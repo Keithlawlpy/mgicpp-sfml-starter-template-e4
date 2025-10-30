@@ -69,8 +69,8 @@ bool Game::init()
 	accepted_stamp.initialiseSprite(*new sf::Texture, "../Data/Critter_Crossing_Customs/accept.png");
 	rejected_stamp.initialiseSprite(*new sf::Texture, "../Data/Critter_Crossing_Customs/reject.png");
 
-	accepted_stamp.getSprite()->setScale(0.5f, 0.5f);
-	rejected_stamp.getSprite()->setScale(0.5f, 0.5f);
+	accepted_stamp.getSprite()->setScale(1, 1);
+	rejected_stamp.getSprite()->setScale(1, 1);
 
 
 
@@ -81,6 +81,7 @@ bool Game::init()
 
 void Game::update(float dt)
 {
+	sf::Vector2f stamp_offset = { 50.f, 50.f };
 	dragSprite(dragged);
 
 
@@ -88,12 +89,23 @@ void Game::update(float dt)
 	if (accept_button.getGlobalBounds().intersects(currentPassport->getSprite()->getGlobalBounds()))
 	{
 		passport_accepted = true;
+		passport_rejected = false;
 	}
 	if (reject_button.getGlobalBounds().intersects(currentPassport->getSprite()->getGlobalBounds()))
 	{
 		passport_rejected = true;
+		passport_accepted = false;
 	}
 
+	//position stamps
+	if (passport_accepted)
+	{
+		accepted_stamp.getSprite()->setPosition(currentPassport->getSprite()->getPosition() + stamp_offset);
+	}
+	else if (passport_rejected)
+	{
+		rejected_stamp.getSprite()->setPosition(currentPassport->getSprite()->getPosition() + stamp_offset);
+	}
 
 	//passport validation
 	if (passport_accepted || passport_rejected)
@@ -118,18 +130,16 @@ void Game::render()
 			window.draw(*currentAnimal->getSprite());
 			window.draw(*currentPassport->getSprite());
 			window.draw(Score);
-			window.draw(*accepted_stamp.getSprite());
-			window.draw(*rejected_stamp.getSprite());
 			window.draw(accept_button);
 			window.draw(reject_button);
 			
 			if (passport_accepted)
 			{
-				//draw accepted stamp
+				window.draw(*accepted_stamp.getSprite());
 			}
 			else if (passport_rejected)
 			{
-				//draw rejected stamp
+				window.draw(*rejected_stamp.getSprite());
 			}
 
 
@@ -159,6 +169,7 @@ void Game::mousePressed(sf::Event event)
 		{
 			dragged = currentPassport->getSprite();	
 			drag_offset = mouse_positionf - dragged->getPosition();
+
 		}
 		if (accept_button.getGlobalBounds().contains(mouse_positionf))
 		{
