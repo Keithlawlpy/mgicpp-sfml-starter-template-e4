@@ -30,7 +30,8 @@ class Game
   sf::Text menu_text;
 
   //game screen
-  sf::Text Score;
+  sf::Text Score_text;
+  int Score = 0;
 
   // game objects
 
@@ -64,6 +65,7 @@ class Game
   //dragging
   sf::Sprite* dragged = nullptr;
   sf::Vector2f drag_offset;
+  bool mouse_dragging = false;
 
 
   //game state
