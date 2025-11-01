@@ -49,22 +49,11 @@ bool Game::init()
 		passports.push_back(passport);
 	}
 	//button
+	accept_button.initialiseSprite(*new sf::Texture, "../Data/Critter_Crossing_Customs/accept_button.png");
+	accept_button.getSprite()->setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 25);
 
-	if (!accept_texture.loadFromFile("../Data/Critter_Crossing_Customs/accept_button.png"))
-	{
-		std::cout << "accept texture did not load";
-	}
-	accept_button.setTexture(accept_texture);
-	accepted_stamp.getSprite()->setScale(0.5, 0.5);
-	accept_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 25);
-
-	if (!reject_texture.loadFromFile("../Data/Critter_Crossing_Customs/reject_button.png"))
-	{
-		std::cout << "reject texture did not load";
-	}
-	reject_button.setTexture(reject_texture);
-	rejected_stamp.getSprite()->setScale(0.5, 0.5);
-	reject_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 150);
+	reject_button.initialiseSprite(*new sf::Texture, "../Data/Critter_Crossing_Customs/reject_button.png");
+	reject_button.getSprite()->setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 150);
 
 	//stamps
 
@@ -92,13 +81,13 @@ void Game::update(float dt)
 
 
 	//check for passport validation
-	if (accept_button.getGlobalBounds().intersects(currentPassport->getSprite()->getGlobalBounds()) && mouse_dragging)
+	if (accept_button.getSprite()->getGlobalBounds().intersects(currentPassport->getSprite()->getGlobalBounds()) && mouse_dragging)
 	{
 		std::cout << "accept stamped \n";
 		passport_accepted = true;
 		passport_rejected = false;
 	}
-	if (reject_button.getGlobalBounds().intersects(currentPassport->getSprite()->getGlobalBounds()) && mouse_dragging)
+	if (reject_button.getSprite()->getGlobalBounds().intersects(currentPassport->getSprite()->getGlobalBounds()) && mouse_dragging)
 	{
 		std::cout << "reject stamped \n";
 		passport_rejected = true;
@@ -175,8 +164,8 @@ void Game::render()
 				window.draw(*rejected_stamp.getSprite());
 			}
 
-			window.draw(accept_button);
-			window.draw(reject_button);
+			window.draw(*accept_button.getSprite());
+			window.draw(*reject_button.getSprite());
 
 			break;
 
@@ -207,15 +196,15 @@ void Game::mousePressed(sf::Event event)
 			mouse_dragging = false;
 
 		}
-		if (accept_button.getGlobalBounds().contains(mouse_positionf))
+		if (accept_button.getSprite()->getGlobalBounds().contains(mouse_positionf))
 		{
-			dragged = &accept_button;
+			dragged = accept_button.getSprite();
 			drag_offset = mouse_positionf - dragged->getPosition();
 			mouse_dragging = true;
 		}
-		if (reject_button.getGlobalBounds().contains(mouse_positionf))
+		if (reject_button.getSprite()->getGlobalBounds().contains(mouse_positionf))
 		{
-			dragged = &reject_button;
+			dragged = reject_button.getSprite();
 			drag_offset = mouse_positionf - dragged->getPosition();
 			mouse_dragging = true;
 		}
@@ -293,8 +282,8 @@ void Game::newAnimal()
 	currentPassport->getSprite()->setPosition(window.getSize().x / 2 + 100, window.getSize().y / 3);
 
 	//reset buttons position
-	accept_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 25);
-	reject_button.setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 150);
+	accept_button.getSprite()->setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 25);
+	reject_button.getSprite()->setPosition(window.getSize().x / 12, (window.getSize().y / 2) + 150);
 
 	Score_text.setString("Score: " + std::to_string(Score));
 

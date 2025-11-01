@@ -44,10 +44,9 @@ class Game
   std::vector<std::string> animalNames = { "elephant", "moose", "penguin" };
 
   //buttons
-  sf::Sprite accept_button;
-  sf::Texture accept_texture;
-  sf::Sprite reject_button;
-  sf::Texture reject_texture;
+  GameObject accept_button;
+  GameObject reject_button;
+
 
   //stamps
   GameObject accepted_stamp;
