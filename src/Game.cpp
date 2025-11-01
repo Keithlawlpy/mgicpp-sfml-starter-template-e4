@@ -30,11 +30,8 @@ bool Game::init()
 	menu_text.setFillColor(sf::Color(253, 184, 39, 128));
 
 	//background
-	if (!background_texture.loadFromFile("../Data/WhackaMole_Worksheet/background.png"))
-	{
-		std::cout << "background texture did not load \n";
-	}
-	background.setTexture(background_texture);
+	background.initialiseSprite(*new sf::Texture, "../Data/WhackaMole_Worksheet/background.png");
+	background.getSprite()->setPosition(0,0);
 
 	//animal initialization
 
@@ -68,6 +65,16 @@ bool Game::init()
 	Score_text.setCharacterSize(50);
 	Score_text.setPosition(10,20);
 	Score_text.setString("Score: " + std::to_string(Score));
+
+	//end screen
+
+	end_text.initialiseText(font, "../Data/Fonts/OpenSans-Bold.ttf");
+	end_text.getSprite()->setPosition(
+		(window.getSize().x - end_text.getSprite()->getGlobalBounds().width) / 4,
+		(window.getSize().y - end_text.getSprite()->getGlobalBounds().height) / 10);
+	end_text.getText()->setCharacterSize(100);
+	end_text.getText()->setFillColor(sf::Color(253, 184, 39, 128));
+
 
 
 	newAnimal();
@@ -145,12 +152,14 @@ void Game::render()
 	switch(current_state)
 	{
 		case GameState::MENUSCREEN:
+
+			window.draw(*background.getSprite());
 			window.draw(menu_text);
 
 			break;
 		case GameState::PLAYING:
 
-			window.draw(background);
+			window.draw(*background.getSprite());
 			window.draw(*currentAnimal->getSprite());
 			window.draw(*currentPassport->getSprite());
 			window.draw(Score_text);
@@ -170,7 +179,10 @@ void Game::render()
 			break;
 
 		case GameState::END:
-			//draw end screen
+
+			window.draw(*background.getSprite());
+			window.draw(*end_text.getText());
+			
 			break;
 
 		default:
@@ -244,10 +256,7 @@ void Game::keyPressed(sf::Event event)
 	}
 	if(event.key.code == sf::Keyboard::Q)
 	{
-		if (current_state == GameState::PLAYING)
-		{
-			window.close();
-		}
+		window.close();
 	}
 	if(event.key.code == sf::Keyboard::R)
 	{
@@ -287,6 +296,8 @@ void Game::newAnimal()
 
 	Score_text.setString("Score: " + std::to_string(Score));
 
+	scorecheck();
+
 
 }
 
@@ -300,4 +311,21 @@ void Game::dragSprite(sf::Sprite* sprite)
 		sf::Vector2f drag_position = mouse_positionf - drag_offset;
 		sprite->setPosition(drag_position.x, drag_position.y);
 	}
+}
+
+void Game::scorecheck()
+{
+	if (Score >= 10)
+	{
+		current_state = GameState::END;
+		end_text.getText()->setString(" you won! ");
+	}
+	else if (Score < 0)
+	{
+		current_state = GameState::END;
+		end_text.getText()->setString(" you lost ");
+	}
+
+	Score = 0;
+
 }

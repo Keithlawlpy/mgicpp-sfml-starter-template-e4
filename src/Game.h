@@ -21,6 +21,7 @@ class Game
   void keyPressed(sf::Event event);
   void newAnimal();
   void dragSprite(sf::Sprite* sprite);
+  void scorecheck();
 
  private:
   sf::RenderWindow& window;
@@ -31,7 +32,11 @@ class Game
 
   //game screen
   sf::Text Score_text;
-  int Score = 0;
+  int Score = 5;
+
+  //end screen
+
+  GameObject end_text;
 
   // game objects
 
@@ -53,8 +58,7 @@ class Game
   GameObject rejected_stamp;
 
   //background
-  sf::Sprite background;
-  sf::Texture background_texture;
+  GameObject background;
 
   //vaildation
   bool passport_accepted = true;
